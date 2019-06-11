@@ -130,9 +130,9 @@ func (c *Env) Describe(ch chan<- *prometheus.Desc) error {
 	return nil
 }
 
-// clusterIDFromPath received the path variabled from the executed walk
-// function. The path variable is intended to be the file name of the
-// environment file managed by Flannel.
+// clusterIDFromPath receives the file name from the result of ioutil.ReadDir.
+// The path variable is intended to be the file name of the environment file
+// managed by Flannel.
 //
 //     br-ux9ty.env
 //
