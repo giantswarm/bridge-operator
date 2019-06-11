@@ -1,7 +1,7 @@
 package collector
 
 const (
-	GaugeValue float64 = 1
+	gaugeValue float64 = 1
 	namespace          = "bridge_operator"
 )
 

@@ -73,7 +73,7 @@ func NewEnv(config EnvConfig) (*Env, error) {
 }
 
 func (c *Env) Collect(ch chan<- prometheus.Metric) error {
-	desiredClusterIDs := map[string]struct{}{}
+	var desiredClusterIDs []string
 	{
 		l, err := c.g8sClient.Core().FlannelConfigs(metav1.NamespaceAll).List(metav1.ListOptions{})
 		if err != nil {
@@ -81,14 +81,14 @@ func (c *Env) Collect(ch chan<- prometheus.Metric) error {
 		}
 
 		for _, i := range l.Items {
-			desiredClusterIDs[i.Name] = struct{}{}
+			desiredClusterIDs = append(desiredClusterIDs, i.Name)
 		}
 	}
 
-	envClusterIDs := map[string]struct{}{}
+	var envClusterIDs []string
 	{
 		f := func(path string, info os.FileInfo, err error) error {
-			envClusterIDs[clusterIDFromPath(path)] = struct{}{}
+			envClusterIDs = append(envClusterIDs, clusterIDFromPath(path))
 			return nil
 		}
 
@@ -99,18 +99,28 @@ func (c *Env) Collect(ch chan<- prometheus.Metric) error {
 	}
 
 	{
-		l, r := symmetricDifference(mapToSlice(desiredClusterIDs), mapToSlice(envClusterIDs))
+		l, r := symmetricDifference(desiredClusterIDs, envClusterIDs)
 
 		// Emit metrics for clusters for which we couldn't find any environment
 		// file.
 		for _, id := range l {
-			//
+			ch <- prometheus.MustNewConstMetric(
+				envClusterWithoutFileDesc,
+				prometheus.GaugeValue,
+				gaugeValue,
+				id,
+			)
 		}
 
 		// Emit metrics for environment files for which we couldn't find any
 		// cluster.
 		for _, id := range r {
-			//
+			ch <- prometheus.MustNewConstMetric(
+				envFileWithoutClusterDesc,
+				prometheus.GaugeValue,
+				gaugeValue,
+				id,
+			)
 		}
 	}
 
@@ -148,16 +158,6 @@ func containsString(l []string, s string) bool {
 	}
 
 	return false
-}
-
-func mapToSlice(m map[string]struct{}) []string {
-	var l []string
-
-	for k, _ := range m {
-		l = append(l, k)
-	}
-
-	return l
 }
 
 // symmetricDifference implements the selection of a relative complement of two
