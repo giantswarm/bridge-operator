@@ -19,7 +19,7 @@ const (
 
 var (
 	envClusterWithoutFileDesc *prometheus.Desc = prometheus.NewDesc(
-		prometheus.BuildFQName(namespace, subsystemEnv, "cluster_without_file"),
+		prometheus.BuildFQName(namespace, subsystemEnv, "cluster_without_env_file"),
 		"Clusters without environment files.",
 		[]string{
 			labelCluster,
@@ -27,7 +27,7 @@ var (
 		nil,
 	)
 	envFileWithoutClusterDesc *prometheus.Desc = prometheus.NewDesc(
-		prometheus.BuildFQName(namespace, subsystemEnv, "file_without_cluster"),
+		prometheus.BuildFQName(namespace, subsystemEnv, "env_file_without_cluster"),
 		"Environment files without associated cluster.",
 		[]string{
 			labelCluster,
