@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bridge-operator
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: bridge-operator
+  annotations:
+    prometheus.io/scrape: "true"
+spec:
+  ports:
+  - port: 8000
+  selector:
+    app: bridge-operator
