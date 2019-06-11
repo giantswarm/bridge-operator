@@ -1,0 +1,78 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: bridge-operator
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: bridge-operator
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: bridge-operator
+      annotations:
+        releasetime: {{ $.Release.Time }}
+    spec:
+      volumes:
+      - name: bridge-operator-configmap
+        configMap:
+          name: bridge-operator-configmap
+          items:
+            - key: config.yaml
+              path: config.yaml
+      - name: certs
+        hostPath:
+          path: /etc/ssl/certs/ca-certificates.crt
+      - name: flannel-env-files
+        hostPath:
+          path: /run/flannel/networks/
+      - name: ssl-certs
+        hostPath:
+          path: /etc/ssl/certs/
+      serviceAccountName: bridge-operator
+      containers:
+      - name: bridge-operator
+        image: quay.io/giantswarm/bridge-operator:[[ .SHA ]]
+        volumeMounts:
+        - name: bridge-operator-configmap
+          mountPath: /var/run/bridge-operator/configmap/
+        - name: bridge-operator-secret
+          mountPath: /var/run/bridge-operator/secret/
+        - name: certs
+          mountPath: /etc/ssl/certs/ca-certificate.crt
+        - name: flannel-env-files
+          mountPath: /run/flannel/networks/
+        - name: ssl-certs
+          mountPath: /etc/ssl/certs/
+        ports:
+        - name: http
+          containerPort: 8000
+        args:
+        - daemon
+        - --config.dirs=/var/run/bridge-operator/configmap/
+        - --config.files=config
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8000
+          initialDelaySeconds: 15
+          timeoutSeconds: 1
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8000
+          initialDelaySeconds: 15
+          timeoutSeconds: 1
+        resources:
+          requests:
+            cpu: 100m
+            memory: 20Mi
+          limits:
+            cpu: 250m
+            memory: 250Mi
+      imagePullSecrets:
+      - name: bridge-operator-pull-secret
