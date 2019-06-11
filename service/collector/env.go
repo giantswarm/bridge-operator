@@ -1,8 +1,7 @@
 package collector
 
 import (
-	"os"
-	"path/filepath"
+	"io/ioutil"
 	"regexp"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -81,14 +80,18 @@ func (c *Env) Collect(ch chan<- prometheus.Metric) error {
 
 	var envClusterIDs []string
 	{
-		f := func(path string, info os.FileInfo, err error) error {
-			envClusterIDs = append(envClusterIDs, clusterIDFromPath(path))
-			return nil
-		}
-
-		err := filepath.Walk(envDirectory, f)
+		files, err := ioutil.ReadDir(envDirectory)
 		if err != nil {
 			return microerror.Mask(err)
+		}
+
+		for _, file := range files {
+			id := clusterIDFromPath(file.Name())
+			if id == "" {
+				return microerror.Maskf(invalidFileError, file.Name())
+			}
+
+			envClusterIDs = append(envClusterIDs, id)
 		}
 	}
 
