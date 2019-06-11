@@ -17,6 +17,10 @@ const (
 	subsystemEnv = "env"
 )
 
+const (
+	envDirectory = "/run/flannel/networks/"
+)
+
 var (
 	envClusterWithoutFileDesc *prometheus.Desc = prometheus.NewDesc(
 		prometheus.BuildFQName(namespace, subsystemEnv, "cluster_without_env_file"),
@@ -39,15 +43,11 @@ var (
 type EnvConfig struct {
 	G8sClient versioned.Interface
 	Logger    micrologger.Logger
-
-	Directory string
 }
 
 type Env struct {
 	g8sClient versioned.Interface
 	logger    micrologger.Logger
-
-	directory string
 }
 
 func NewEnv(config EnvConfig) (*Env, error) {
@@ -58,15 +58,9 @@ func NewEnv(config EnvConfig) (*Env, error) {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
 	}
 
-	if config.Directory == "" {
-		config.Directory = "/run/flannel/networks/"
-	}
-
 	c := &Env{
 		g8sClient: config.G8sClient,
 		logger:    config.Logger,
-
-		directory: config.Directory,
 	}
 
 	return c, nil
@@ -92,7 +86,7 @@ func (c *Env) Collect(ch chan<- prometheus.Metric) error {
 			return nil
 		}
 
-		err := filepath.Walk(c.directory, f)
+		err := filepath.Walk(envDirectory, f)
 		if err != nil {
 			return microerror.Mask(err)
 		}
