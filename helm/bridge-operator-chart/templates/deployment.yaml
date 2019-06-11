@@ -40,8 +40,6 @@ spec:
         volumeMounts:
         - name: bridge-operator-configmap
           mountPath: /var/run/bridge-operator/configmap/
-        - name: bridge-operator-secret
-          mountPath: /var/run/bridge-operator/secret/
         - name: certs
           mountPath: /etc/ssl/certs/ca-certificate.crt
         - name: flannel-env-files
