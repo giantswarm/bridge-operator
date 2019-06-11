@@ -88,7 +88,7 @@ func (c *Env) Collect(ch chan<- prometheus.Metric) error {
 		for _, file := range files {
 			id := clusterIDFromPath(file.Name())
 			if id == "" {
-				return microerror.Maskf(invalidFileError, file.Name())
+				return microerror.Maskf(executionFailedError, "file %q does not encode a cluster ID", file.Name())
 			}
 
 			envClusterIDs = append(envClusterIDs, id)
