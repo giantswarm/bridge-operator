@@ -1,6 +1,8 @@
 package collector
 
 import (
+	"context"
+	"fmt"
 	"io/ioutil"
 	"regexp"
 
@@ -66,8 +68,12 @@ func NewEnv(config EnvConfig) (*Env, error) {
 }
 
 func (c *Env) Collect(ch chan<- prometheus.Metric) error {
+	ctx := context.Background()
+
 	var desiredClusterIDs []string
 	{
+		c.logger.LogCtx(ctx, "level", "debug", "message", "finding all cluster IDs in FlannelConfigs")
+
 		l, err := c.g8sClient.Core().FlannelConfigs(metav1.NamespaceAll).List(metav1.ListOptions{})
 		if err != nil {
 			return microerror.Mask(err)
@@ -76,10 +82,14 @@ func (c *Env) Collect(ch chan<- prometheus.Metric) error {
 		for _, i := range l.Items {
 			desiredClusterIDs = append(desiredClusterIDs, i.Name)
 		}
+
+		c.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("found %d cluster IDs: %#v", len(desiredClusterIDs), desiredClusterIDs))
 	}
 
 	var envClusterIDs []string
 	{
+		c.logger.LogCtx(ctx, "level", "debug", "message", "finding flannel environment files")
+
 		files, err := ioutil.ReadDir(envDirectory)
 		if err != nil {
 			return microerror.Mask(err)
@@ -93,10 +103,19 @@ func (c *Env) Collect(ch chan<- prometheus.Metric) error {
 
 			envClusterIDs = append(envClusterIDs, id)
 		}
+
+		c.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("found %d flannel environment files for cluster IDs: %#v", len(envClusterIDs), envClusterIDs))
 	}
 
 	{
 		l, r := symmetricDifference(desiredClusterIDs, envClusterIDs)
+
+		if len(l) == 0 {
+			c.logger.LogCtx(ctx, "level", "debug", "message", "no orphaned cluster IDs found")
+		}
+		if len(r) == 0 {
+			c.logger.LogCtx(ctx, "level", "debug", "message", "no orphaned flannel environment files found")
+		}
 
 		// Emit metrics for clusters for which we couldn't find any environment
 		// file.
