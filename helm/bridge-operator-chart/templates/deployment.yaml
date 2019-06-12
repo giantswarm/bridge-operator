@@ -1,15 +1,15 @@
-apiVersion: extensions/v1beta1
-kind: Deployment
+apiVersion: apps/v1
+kind: DaemonSet
 metadata:
   name: bridge-operator
   namespace: {{ .Values.namespace }}
   labels:
     app: bridge-operator
 spec:
-  replicas: 1
   revisionHistoryLimit: 3
-  strategy:
-    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: bridge-operator
   template:
     metadata:
       labels:
