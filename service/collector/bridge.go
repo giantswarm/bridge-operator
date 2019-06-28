@@ -114,8 +114,8 @@ func (c *Bridge) Collect(ch chan<- prometheus.Metric) error {
 			c.logger.LogCtx(ctx, "level", "debug", "message", "no orphaned network interfaces found")
 		}
 
-		// Emit metrics for clusters for which we couldn't find any environment
-		// file.
+		// Emit metrics for clusters for which we couldn't find any network
+		// interface.
 		for _, id := range l {
 			ch <- prometheus.MustNewConstMetric(
 				bridgeClusterWithoutNetworkInterfaceDesc,
@@ -125,7 +125,7 @@ func (c *Bridge) Collect(ch chan<- prometheus.Metric) error {
 			)
 		}
 
-		// Emit metrics for environment files for which we couldn't find any
+		// Emit metrics for network interfaces for which we couldn't find any
 		// cluster.
 		for _, id := range r {
 			ch <- prometheus.MustNewConstMetric(
