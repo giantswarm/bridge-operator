@@ -101,7 +101,9 @@ func (c *Bridge) Collect(ch chan<- prometheus.Metric) error {
 			fmt.Printf("\n")
 			id := clusterIDFromName(i.Name)
 			if id == "" {
-				return microerror.Maskf(executionFailedError, "interface %#q does not encode a cluster ID", i.Name)
+				// There are many different network interfaces and we cannot parse all
+				// of them. Thus we continue and go ahead with the next one we found.
+				continue
 			}
 
 			bridgeClusterIDs = append(bridgeClusterIDs, id)
@@ -156,10 +158,10 @@ func (c *Bridge) Describe(ch chan<- *prometheus.Desc) error {
 // net.Interfaces. The name variable is intended to be the interface name of the
 // KVM node's network bridge.
 //
-//     br-ux9ty.env
+//     br-6m5o8
 //
 func clusterIDFromName(name string) string {
-	r := regexp.MustCompile(`([a-z0-9]+).env$`)
+	r := regexp.MustCompile(`br-([a-z0-9]+)$`)
 	l := r.FindStringSubmatch(name)
 
 	if len(l) == 2 {
