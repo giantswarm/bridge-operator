@@ -55,6 +55,10 @@
   name = "github.com/giantswarm/operatorkit"
 
 [[constraint]]
+  branch = "master"
+  name = "github.com/google/go-cmp"
+
+[[constraint]]
   name = "github.com/prometheus/client_golang"
   version = "0.9.3"
 

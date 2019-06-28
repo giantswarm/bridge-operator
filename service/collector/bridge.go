@@ -91,11 +91,13 @@ func (c *Bridge) Collect(ch chan<- prometheus.Metric) error {
 		}
 
 		for _, i := range interfaces {
-			id := clusterIDFromName(i.Name)
-			if id == "" {
+			id, err := clusterIDFromName(i.Name)
+			if IsNameMatch(err) {
 				// There are many different network interfaces and we cannot parse all
 				// of them. Thus we continue and go ahead with the next one we found.
 				continue
+			} else if err != nil {
+				return microerror.Mask(err)
 			}
 
 			bridgeClusterIDs = append(bridgeClusterIDs, id)
@@ -156,13 +158,13 @@ func (c *Bridge) Describe(ch chan<- *prometheus.Desc) error {
 //
 //     br-6m5o8
 //
-func clusterIDFromName(name string) string {
+func clusterIDFromName(name string) (string, error) {
 	r := regexp.MustCompile(`br-([a-z0-9]+)$`)
 	l := r.FindStringSubmatch(name)
 
 	if len(l) == 2 {
-		return l[1]
+		return l[1], nil
 	}
 
-	return ""
+	return "", microerror.Maskf(nameMatchError, "network interface %#q must match %#q", name, r.String())
 }
