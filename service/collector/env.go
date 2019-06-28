@@ -95,9 +95,9 @@ func (c *Env) Collect(ch chan<- prometheus.Metric) error {
 		}
 
 		for _, file := range files {
-			id := clusterIDFromPath(file.Name())
-			if id == "" {
-				return microerror.Maskf(executionFailedError, "file %#q does not encode a cluster ID", file.Name())
+			id, err := clusterIDFromPath(file.Name())
+			if err != nil {
+				return microerror.Mask(err)
 			}
 
 			envClusterIDs = append(envClusterIDs, id)
@@ -158,13 +158,13 @@ func (c *Env) Describe(ch chan<- *prometheus.Desc) error {
 //
 //     br-ux9ty.env
 //
-func clusterIDFromPath(path string) string {
+func clusterIDFromPath(path string) (string, error) {
 	r := regexp.MustCompile(`([a-z0-9]+).env$`)
 	l := r.FindStringSubmatch(path)
 
 	if len(l) == 2 {
-		return l[1]
+		return l[1], nil
 	}
 
-	return ""
+	return "", microerror.Maskf(nameMatchError, "environment file %#q must match %#q", path, r.String())
 }
