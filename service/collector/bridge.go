@@ -92,7 +92,7 @@ func (c *Bridge) Collect(ch chan<- prometheus.Metric) error {
 
 		for _, i := range interfaces {
 			id, err := clusterIDFromName(i.Name)
-			if IsExecutionFailed(err) {
+			if IsNameMatch(err) {
 				// There are many different network interfaces and we cannot parse all
 				// of them. Thus we continue and go ahead with the next one we found.
 				continue
@@ -162,5 +162,5 @@ func clusterIDFromName(name string) (string, error) {
 		return l[1], nil
 	}
 
-	return "", microerror.Maskf(executionFailedError, "network interface %#q must match %#q", name, r.String())
+	return "", microerror.Maskf(nameMatchError, "network interface %#q must match %#q", name, r.String())
 }

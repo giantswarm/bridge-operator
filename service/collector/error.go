@@ -21,3 +21,12 @@ var invalidConfigError = &microerror.Error{
 func IsInvalidConfig(err error) bool {
 	return microerror.Cause(err) == invalidConfigError
 }
+
+var nameMatchError = &microerror.Error{
+	Kind: "nameMatchError",
+}
+
+// IsNameMatch asserts nameMatchError.
+func IsNameMatch(err error) bool {
+	return microerror.Cause(err) == nameMatchError
+}
