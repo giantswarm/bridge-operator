@@ -119,7 +119,7 @@ func (c *Env) Collect(ch chan<- prometheus.Metric) error {
 		// Emit metrics for clusters for which we couldn't find any environment
 		// file.
 		for _, id := range l {
-			c.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("found orphaned cluster ID %#q", id))
+			c.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("emitting prometheus metric for orphaned cluster ID %#q", id))
 
 			ch <- prometheus.MustNewConstMetric(
 				envClusterWithoutFlannelNetworkEnvFileDesc,
@@ -132,7 +132,7 @@ func (c *Env) Collect(ch chan<- prometheus.Metric) error {
 		// Emit metrics for environment files for which we couldn't find any
 		// cluster.
 		for _, id := range r {
-			c.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("found orphaned environment file %#q", "br-"+id+".env"))
+			c.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("emitting prometheus metric for orphaned environment file %#q", "br-"+id+".env"))
 
 			ch <- prometheus.MustNewConstMetric(
 				envFlannelNetworkEnvFileWithoutClusterDesc,
