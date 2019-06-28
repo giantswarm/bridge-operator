@@ -23,7 +23,7 @@ const (
 )
 
 var (
-	envClusterWithoutFileDesc *prometheus.Desc = prometheus.NewDesc(
+	envClusterWithoutFlannelNetworkEnvFileDesc *prometheus.Desc = prometheus.NewDesc(
 		prometheus.BuildFQName(namespace, subsystemEnv, "cluster_without_flannel_network_env_file"),
 		"Clusters without environment files.",
 		[]string{
@@ -31,9 +31,9 @@ var (
 		},
 		nil,
 	)
-	envFileWithoutClusterDesc *prometheus.Desc = prometheus.NewDesc(
+	envFlannelNetworkEnvFileWithoutClusterDesc *prometheus.Desc = prometheus.NewDesc(
 		prometheus.BuildFQName(namespace, subsystemEnv, "flannel_network_env_file_without_cluster"),
-		"Environment files without associated cluster.",
+		"Environment files without cluster.",
 		[]string{
 			labelCluster,
 		},
@@ -98,7 +98,7 @@ func (c *Env) Collect(ch chan<- prometheus.Metric) error {
 		for _, file := range files {
 			id := clusterIDFromPath(file.Name())
 			if id == "" {
-				return microerror.Maskf(executionFailedError, "file %q does not encode a cluster ID", file.Name())
+				return microerror.Maskf(executionFailedError, "file %#q does not encode a cluster ID", file.Name())
 			}
 
 			envClusterIDs = append(envClusterIDs, id)
@@ -121,7 +121,7 @@ func (c *Env) Collect(ch chan<- prometheus.Metric) error {
 		// file.
 		for _, id := range l {
 			ch <- prometheus.MustNewConstMetric(
-				envClusterWithoutFileDesc,
+				envClusterWithoutFlannelNetworkEnvFileDesc,
 				prometheus.GaugeValue,
 				gaugeValue,
 				id,
@@ -132,7 +132,7 @@ func (c *Env) Collect(ch chan<- prometheus.Metric) error {
 		// cluster.
 		for _, id := range r {
 			ch <- prometheus.MustNewConstMetric(
-				envFileWithoutClusterDesc,
+				envFlannelNetworkEnvFileWithoutClusterDesc,
 				prometheus.GaugeValue,
 				gaugeValue,
 				id,
@@ -144,8 +144,8 @@ func (c *Env) Collect(ch chan<- prometheus.Metric) error {
 }
 
 func (c *Env) Describe(ch chan<- *prometheus.Desc) error {
-	ch <- envClusterWithoutFileDesc
-	ch <- envFileWithoutClusterDesc
+	ch <- envClusterWithoutFlannelNetworkEnvFileDesc
+	ch <- envFlannelNetworkEnvFileWithoutClusterDesc
 	return nil
 }
 
