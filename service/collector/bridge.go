@@ -96,6 +96,8 @@ func (c *Bridge) Collect(ch chan<- prometheus.Metric) error {
 				// There are many different network interfaces and we cannot parse all
 				// of them. Thus we continue and go ahead with the next one we found.
 				continue
+			} else if err != nil {
+				return microerror.Mask(err)
 			}
 
 			bridgeClusterIDs = append(bridgeClusterIDs, id)
