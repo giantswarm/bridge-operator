@@ -108,15 +108,17 @@ func (c *Bridge) Collect(ch chan<- prometheus.Metric) error {
 		l, r := symmetricDifference(desiredClusterIDs, bridgeClusterIDs)
 
 		if len(l) == 0 {
-			c.logger.LogCtx(ctx, "level", "debug", "message", "no orphaned cluster IDs found")
+			c.logger.LogCtx(ctx, "level", "debug", "message", "did not find orphaned cluster IDs")
 		}
 		if len(r) == 0 {
-			c.logger.LogCtx(ctx, "level", "debug", "message", "no orphaned network interfaces found")
+			c.logger.LogCtx(ctx, "level", "debug", "message", "did not find orphaned network interfaces")
 		}
 
 		// Emit metrics for clusters for which we couldn't find any network
 		// interface.
 		for _, id := range l {
+			c.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("found orphaned cluster ID %#q", id))
+
 			ch <- prometheus.MustNewConstMetric(
 				bridgeClusterWithoutNetworkInterfaceDesc,
 				prometheus.GaugeValue,
@@ -128,6 +130,8 @@ func (c *Bridge) Collect(ch chan<- prometheus.Metric) error {
 		// Emit metrics for network interfaces for which we couldn't find any
 		// cluster.
 		for _, id := range r {
+			c.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("found orphaned network interface %#q", "br-"+id))
+
 			ch <- prometheus.MustNewConstMetric(
 				bridgeNetworkInterfaceWithoutClusterDesc,
 				prometheus.GaugeValue,
