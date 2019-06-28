@@ -22,6 +22,19 @@ type Set struct {
 func NewSet(config SetConfig) (*Set, error) {
 	var err error
 
+	var bridgeCollector *Bridge
+	{
+		c := BridgeConfig{
+			G8sClient: config.G8sClient,
+			Logger:    config.Logger,
+		}
+
+		bridgeCollector, err = NewBridge(c)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
 	var envCollector *Env
 	{
 		c := EnvConfig{
@@ -39,6 +52,7 @@ func NewSet(config SetConfig) (*Set, error) {
 	{
 		c := collector.SetConfig{
 			Collectors: []collector.Interface{
+				bridgeCollector,
 				envCollector,
 			},
 			Logger: config.Logger,
