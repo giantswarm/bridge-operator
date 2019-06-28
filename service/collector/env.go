@@ -79,7 +79,7 @@ func (c *Env) Collect(ch chan<- prometheus.Metric) error {
 		}
 
 		for _, i := range l.Items {
-			desiredClusterIDs = append(desiredClusterIDs, i.Name)
+			desiredClusterIDs = append(desiredClusterIDs, i.Spec.Cluster.ID)
 		}
 
 		c.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("found %d cluster IDs: %#v", len(desiredClusterIDs), desiredClusterIDs))
