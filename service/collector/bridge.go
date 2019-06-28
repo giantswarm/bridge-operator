@@ -84,21 +84,14 @@ func (c *Bridge) Collect(ch chan<- prometheus.Metric) error {
 
 	var bridgeClusterIDs []string
 	{
-		c.logger.LogCtx(ctx, "level", "debug", "message", "finding flannel environment files")
+		c.logger.LogCtx(ctx, "level", "debug", "message", "finding network interfaces")
 
 		interfaces, err := net.Interfaces()
 		if err != nil {
 			return microerror.Mask(err)
 		}
 
-		fmt.Printf("\n")
-		fmt.Printf("%#v\n", interfaces)
-		fmt.Printf("\n")
-
 		for _, i := range interfaces {
-			fmt.Printf("\n")
-			fmt.Printf("%#v\n", i.Name)
-			fmt.Printf("\n")
 			id := clusterIDFromName(i.Name)
 			if id == "" {
 				// There are many different network interfaces and we cannot parse all
@@ -109,7 +102,7 @@ func (c *Bridge) Collect(ch chan<- prometheus.Metric) error {
 			bridgeClusterIDs = append(bridgeClusterIDs, id)
 		}
 
-		c.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("found %d flannel environment files for cluster IDs: %#v", len(bridgeClusterIDs), bridgeClusterIDs))
+		c.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("found %d network interfaces for cluster IDs: %#v", len(bridgeClusterIDs), bridgeClusterIDs))
 	}
 
 	{
@@ -119,7 +112,7 @@ func (c *Bridge) Collect(ch chan<- prometheus.Metric) error {
 			c.logger.LogCtx(ctx, "level", "debug", "message", "no orphaned cluster IDs found")
 		}
 		if len(r) == 0 {
-			c.logger.LogCtx(ctx, "level", "debug", "message", "no orphaned flannel environment files found")
+			c.logger.LogCtx(ctx, "level", "debug", "message", "no orphaned network interfaces found")
 		}
 
 		// Emit metrics for clusters for which we couldn't find any environment
