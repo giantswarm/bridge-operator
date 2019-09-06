@@ -11,26 +11,23 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/giantswarm/bridge-operator/flag"
+	"github.com/giantswarm/bridge-operator/pkg/project"
 	"github.com/giantswarm/bridge-operator/server"
 	"github.com/giantswarm/bridge-operator/service"
 )
 
 var (
-	description string     = "The bridge-operator handles network bridges in KVM hardware machines."
-	f           *flag.Flag = flag.New()
-	gitCommit   string     = "n/a"
-	name        string     = "bridge-operator"
-	source      string     = "https://github.com/giantswarm/bridge-operator"
+	f *flag.Flag = flag.New()
 )
 
 func main() {
-	err := mainError(context.Background())
+	err := mainE(context.Background())
 	if err != nil {
-		panic(fmt.Sprintf("%#v", err))
+		panic(microerror.Stack(err))
 	}
 }
 
-func mainError(ctx context.Context) error {
+func mainE(ctx context.Context) error {
 	var err error
 
 	var newLogger micrologger.Logger
@@ -51,10 +48,10 @@ func mainError(ctx context.Context) error {
 				Logger: newLogger,
 				Viper:  v,
 
-				Description: description,
-				GitCommit:   gitCommit,
-				ProjectName: name,
-				Source:      source,
+				Description: project.Description(),
+				GitCommit:   project.GitSHA(),
+				ProjectName: project.Name(),
+				Source:      project.Source(),
 			}
 
 			newService, err = service.New(c)
@@ -72,7 +69,7 @@ func mainError(ctx context.Context) error {
 				Service: newService,
 				Viper:   v,
 
-				ProjectName: name,
+				ProjectName: project.Name(),
 			}
 
 			newServer, err = server.New(c)
@@ -90,10 +87,10 @@ func mainError(ctx context.Context) error {
 			Logger:        newLogger,
 			ServerFactory: serverFactory,
 
-			Description:    description,
-			GitCommit:      gitCommit,
-			Name:           name,
-			Source:         source,
+			Description:    project.Description(),
+			GitCommit:      project.GitSHA(),
+			Name:           project.Name(),
+			Source:         project.Source(),
 			VersionBundles: service.NewVersionBundles(),
 		}
 
