@@ -27,7 +27,7 @@
 
 
 [[constraint]]
-  branch = "kubernetes-1.15.4"
+  branch = "master"
   name = "github.com/giantswarm/apiextensions"
 
 [[constraint]]
@@ -51,7 +51,7 @@
   name = "github.com/giantswarm/micrologger"
 
 [[constraint]]
-  branch = "kubernetes-1.15.4"
+  branch = "master"
   name = "github.com/giantswarm/operatorkit"
 
 [[constraint]]
