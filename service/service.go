@@ -21,12 +21,6 @@ type Config struct {
 
 	Flag  *flag.Flag
 	Viper *viper.Viper
-
-	Description string
-	GitCommit   string
-	ProjectName string
-	Source      string
-	Version     string
 }
 
 type Service struct {
@@ -88,11 +82,11 @@ func New(config Config) (*Service, error) {
 	var versionService *version.Service
 	{
 		c := version.Config{
-			Description:    config.Description,
-			GitCommit:      config.GitCommit,
-			Name:           config.ProjectName,
-			Source:         config.Source,
-			Version:        config.Version,
+			Description:    project.Description(),
+			GitCommit:      project.GitSHA(),
+			Name:           project.Name(),
+			Source:         project.Source(),
+			Version:        project.Version(),
 			VersionBundles: NewVersionBundles(),
 		}
 
