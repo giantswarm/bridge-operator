@@ -1,14 +1,14 @@
 package collector
 
 import (
-	"github.com/giantswarm/apiextensions/pkg/clientset/versioned"
 	"github.com/giantswarm/exporterkit/collector"
+	"github.com/giantswarm/k8sclient"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 )
 
 type SetConfig struct {
-	G8sClient versioned.Interface
+	K8sClient k8sclient.Interface
 	Logger    micrologger.Logger
 }
 
@@ -25,7 +25,7 @@ func NewSet(config SetConfig) (*Set, error) {
 	var bridgeCollector *Bridge
 	{
 		c := BridgeConfig{
-			G8sClient: config.G8sClient,
+			G8sClient: config.K8sClient.G8sClient(),
 			Logger:    config.Logger,
 		}
 
@@ -38,7 +38,7 @@ func NewSet(config SetConfig) (*Set, error) {
 	var envCollector *Env
 	{
 		c := EnvConfig{
-			G8sClient: config.G8sClient,
+			G8sClient: config.K8sClient.G8sClient(),
 			Logger:    config.Logger,
 		}
 

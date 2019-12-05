@@ -44,15 +44,10 @@ func mainE(ctx context.Context) error {
 		var newService *service.Service
 		{
 			c := service.Config{
-				Flag:   f,
 				Logger: newLogger,
-				Viper:  v,
 
-				Description: project.Description(),
-				GitCommit:   project.GitSHA(),
-				ProjectName: project.Name(),
-				Source:      project.Source(),
-				Version:     project.Version(),
+				Flag:  f,
+				Viper: v,
 			}
 
 			newService, err = service.New(c)
