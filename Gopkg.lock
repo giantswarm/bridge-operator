@@ -96,11 +96,12 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:e4d78572f2a3bee23e41c567dd82fc22018c8f0d736aa376d8db86448f43a7db"
+  digest = "1:f14f3cf9e9784cbcffe13c6fe4728a9e38b9c124337e72570c720fe46642231f"
   name = "github.com/giantswarm/k8sclient"
   packages = [
     ".",
     "k8scrdclient",
+    "k8srestconfig",
   ]
   pruneopts = "UT"
   revision = "059a94fd04e59aceab384413cf9608ae1640a2ca"
@@ -162,10 +163,9 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:a355047c4ee54b5645ace098300da6479f301a0eff73a1f47f8d40517903a75b"
+  digest = "1:a47232dd3fe4216f1a2abf67eedc7392aaf40788b115eab827c8d3100b2229b6"
   name = "github.com/giantswarm/operatorkit"
   packages = [
-    "client/k8srestconfig",
     "flag/service/kubernetes",
     "flag/service/kubernetes/tls",
     "flag/service/kubernetes/watch",
@@ -842,6 +842,7 @@
     "github.com/giantswarm/apiextensions/pkg/clientset/versioned",
     "github.com/giantswarm/exporterkit/collector",
     "github.com/giantswarm/k8sclient",
+    "github.com/giantswarm/k8sclient/k8srestconfig",
     "github.com/giantswarm/microendpoint/endpoint/healthz",
     "github.com/giantswarm/microendpoint/endpoint/version",
     "github.com/giantswarm/microendpoint/service/version",
@@ -850,7 +851,6 @@
     "github.com/giantswarm/microkit/flag",
     "github.com/giantswarm/microkit/server",
     "github.com/giantswarm/micrologger",
-    "github.com/giantswarm/operatorkit/client/k8srestconfig",
     "github.com/giantswarm/operatorkit/flag/service/kubernetes",
     "github.com/giantswarm/versionbundle",
     "github.com/google/go-cmp/cmp",
