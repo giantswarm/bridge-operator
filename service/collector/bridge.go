@@ -69,7 +69,7 @@ func (c *Bridge) Collect(ch chan<- prometheus.Metric) error {
 	{
 		c.logger.LogCtx(ctx, "level", "debug", "message", "finding all cluster IDs in FlannelConfigs")
 
-		l, err := c.g8sClient.Core().FlannelConfigs(metav1.NamespaceAll).List(metav1.ListOptions{})
+		l, err := c.g8sClient.CoreV1alpha1().FlannelConfigs(metav1.NamespaceAll).List(metav1.ListOptions{})
 		if err != nil {
 			return microerror.Mask(err)
 		}
