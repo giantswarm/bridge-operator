@@ -51,7 +51,7 @@ spec:
           mountPath: /etc/ssl/certs/
         ports:
         - name: http
-          containerPort: 8000
+          containerPort: 18000
         args:
         - daemon
         - --config.dirs=/var/run/bridge-operator/configmap/
@@ -59,13 +59,13 @@ spec:
         livenessProbe:
           httpGet:
             path: /healthz
-            port: 8000
+            port: 18000
           initialDelaySeconds: 15
           timeoutSeconds: 1
         readinessProbe:
           httpGet:
             path: /healthz
-            port: 8000
+            port: 18000
           initialDelaySeconds: 15
           timeoutSeconds: 1
         resources:
