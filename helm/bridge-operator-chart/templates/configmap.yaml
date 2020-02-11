@@ -10,7 +10,7 @@ data:
         debug:
           server: true
       listen:
-        address: 'http://0.0.0.0:80000'
+        address: 'http://0.0.0.0:18000'
     service:
       kubernetes:
         address: ''
