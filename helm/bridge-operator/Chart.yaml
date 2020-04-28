@@ -1,2 +1,6 @@
-name: bridge-operator-chart
-version: 1.0.0-[[ .SHA ]]
+apiVersion: "v1"
+name: "bridge-operator"
+description: "Helm chart for bridge-operator."
+home: "https://github.com/giantswarm/bridge-operator"
+version: "[[ .Version ]]"
+appVersion: "[[ .AppVersion ]]"
