@@ -7,3 +7,8 @@ pspName: bridge-operator-psp
 name: bridge-operator
 userID: 1000
 groupID: 1000
+
+image:
+  repository: quay.io
+  name: "giantswarm/aws-operator"
+  tag: "[[ .Version ]]"
