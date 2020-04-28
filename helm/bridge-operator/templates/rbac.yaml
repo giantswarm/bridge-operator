@@ -51,7 +51,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: bridge-operator
-    namespace: {{ .Values.namespace }}
+    namespace: {{ .Release.Namespace }}
 roleRef:
   kind: ClusterRole
   name: {{ .Values.clusterRoleName }}
@@ -78,7 +78,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: bridge-operator
-    namespace: {{ .Values.namespace }}
+    namespace: {{ .Release.Namespace }}
 roleRef:
   kind: ClusterRole
   name: {{ .Values.clusterRoleNamePSP }}
