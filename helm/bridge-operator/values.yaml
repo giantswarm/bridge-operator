@@ -10,5 +10,5 @@ groupID: 1000
 
 image:
   repository: quay.io
-  name: "giantswarm/aws-operator"
+  name: "giantswarm/bridge-operator"
   tag: "[[ .Version ]]"
