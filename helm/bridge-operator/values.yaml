@@ -2,7 +2,6 @@ clusterRoleBindingName: bridge-operator
 clusterRoleBindingNamePSP: bridge-operator-psp
 clusterRoleName: bridge-operator
 clusterRoleNamePSP: bridge-operator-psp
-namespace: giantswarm
 pspName: bridge-operator-psp
 
 name: bridge-operator
