@@ -7,7 +7,7 @@ workflows:
   build:
     jobs:
       - architect/go-build:
-          name: go-build
+          name: go-build-bridge-operator
           binary: bridge-operator
           filters:
             tags:
