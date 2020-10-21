@@ -18,3 +18,8 @@ require (
 	k8s.io/apimachinery v0.16.6
 	k8s.io/client-go v0.16.6
 )
+
+replace github.com/gorilla/websocket v1.4.0 => github.com/gorilla/websocket v1.4.2
+
+// v3.3.X is required by sigs.k8s.io/controller-runtime. Can remove this replace when updated.
+replace github.com/coreos/etcd => github.com/coreos/etcd v3.3.25+incompatible
