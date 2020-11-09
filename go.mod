@@ -3,7 +3,7 @@ module github.com/giantswarm/bridge-operator
 go 1.14
 
 require (
-	github.com/giantswarm/apiextensions v0.2.0
+	github.com/giantswarm/apiextensions v0.4.20
 	github.com/giantswarm/exporterkit v0.2.0
 	github.com/giantswarm/k8sclient v0.2.0
 	github.com/giantswarm/microendpoint v0.2.0
@@ -15,8 +15,8 @@ require (
 	github.com/google/go-cmp v0.5.2
 	github.com/prometheus/client_golang v1.8.0
 	github.com/spf13/viper v1.7.1
-	k8s.io/apimachinery v0.16.6
-	k8s.io/client-go v0.16.6
+	k8s.io/apimachinery v0.17.2
+	k8s.io/client-go v0.17.2
 )
 
 replace github.com/gorilla/websocket v1.4.0 => github.com/gorilla/websocket v1.4.2
