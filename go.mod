@@ -13,7 +13,7 @@ require (
 	github.com/giantswarm/operatorkit v0.2.1
 	github.com/giantswarm/versionbundle v0.2.0
 	github.com/google/go-cmp v0.5.4
-	github.com/prometheus/client_golang v1.8.0
+	github.com/prometheus/client_golang v1.9.0
 	github.com/spf13/viper v1.7.1
 	k8s.io/apimachinery v0.17.2
 	k8s.io/client-go v0.17.2
