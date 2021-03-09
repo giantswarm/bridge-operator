@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  architect: giantswarm/architect@0.14.0
+  architect: giantswarm/architect@2.1.0
 
 workflows:
   build:
@@ -57,7 +57,6 @@ workflows:
           name: push-bridge-operator-to-kvm-app-collection
           app_name: "bridge-operator"
           app_collection_repo: "kvm-app-collection"
-          unique: "true"
           requires:
             - push-bridge-operator-to-control-plane-app-catalog
           filters:
