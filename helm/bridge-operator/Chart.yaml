@@ -4,3 +4,5 @@ description: "Helm chart for bridge-operator."
 home: "https://github.com/giantswarm/bridge-operator"
 version: "[[ .Version ]]"
 appVersion: "[[ .AppVersion ]]"
+annotations:
+  application.giantswarm.io/team: "rocket"
