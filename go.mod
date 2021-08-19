@@ -3,9 +3,9 @@ module github.com/giantswarm/bridge-operator
 go 1.14
 
 require (
-	github.com/giantswarm/apiextensions/v3 v3.27.0
+	github.com/giantswarm/apiextensions/v3 v3.30.0
 	github.com/giantswarm/exporterkit v0.2.1
-	github.com/giantswarm/k8sclient/v5 v5.11.0
+	github.com/giantswarm/k8sclient/v5 v5.12.0
 	github.com/giantswarm/microendpoint v0.2.0
 	github.com/giantswarm/microerror v0.3.0
 	github.com/giantswarm/microkit v0.2.2
