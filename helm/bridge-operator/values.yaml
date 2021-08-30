@@ -9,6 +9,10 @@ userID: 1000
 groupID: 1000
 
 image:
-  repository: quay.io
   name: "giantswarm/bridge-operator"
   tag: "[[ .Version ]]"
+
+registry:
+  domain: docker.io
+  pullSecret:
+    dockerConfigJSON: ""

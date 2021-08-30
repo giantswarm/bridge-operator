@@ -39,7 +39,7 @@ spec:
         runAsGroup: {{ .Values.groupID }}
       containers:
       - name: bridge-operator
-        image: {{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
+        image: {{ .Values.registry.domain }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
         volumeMounts:
         - name: bridge-operator-configmap
           mountPath: /var/run/bridge-operator/configmap/
