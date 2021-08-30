@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"regexp"
 
-	"github.com/giantswarm/apiextensions/pkg/clientset/versioned"
+	"github.com/giantswarm/apiextensions/v3/pkg/clientset/versioned"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/prometheus/client_golang/prometheus"
@@ -73,7 +73,7 @@ func (c *Env) Collect(ch chan<- prometheus.Metric) error {
 	{
 		c.logger.LogCtx(ctx, "level", "debug", "message", "finding all cluster IDs in FlannelConfigs")
 
-		l, err := c.g8sClient.CoreV1alpha1().FlannelConfigs(metav1.NamespaceAll).List(metav1.ListOptions{})
+		l, err := c.g8sClient.CoreV1alpha1().FlannelConfigs(metav1.NamespaceAll).List(ctx, metav1.ListOptions{})
 		if err != nil {
 			return microerror.Mask(err)
 		}
