@@ -14,7 +14,7 @@ require (
 	github.com/giantswarm/versionbundle v0.2.0
 	github.com/google/go-cmp v0.5.6
 	github.com/prometheus/client_golang v1.11.0
-	github.com/spf13/viper v1.9.0
+	github.com/spf13/viper v1.10.0
 	k8s.io/apimachinery v0.18.19
 	k8s.io/client-go v0.18.19
 	sigs.k8s.io/cluster-api v0.3.16 // indirect
