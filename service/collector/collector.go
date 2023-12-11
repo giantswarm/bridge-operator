@@ -24,11 +24,10 @@ func containsString(l []string, s string) bool {
 // Given input arguments a and b, return value l contains only values that are
 // exclusively in a and r contains only values that are exclusively in b.
 //
-//     a = [1, 2, 3, 4]
-//     b = [3, 4, 5, 6]
-//     l = [1, 2]
-//     r = [5, 6]
-//
+//	a = [1, 2, 3, 4]
+//	b = [3, 4, 5, 6]
+//	l = [1, 2]
+//	r = [5, 6]
 func symmetricDifference(a, b []string) (l []string, r []string) {
 	for _, s := range a {
 		if !containsString(b, s) {
