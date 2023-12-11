@@ -156,8 +156,7 @@ func (c *Env) Describe(ch chan<- *prometheus.Desc) error {
 // The path variable is intended to be the file name of the environment file
 // managed by Flannel.
 //
-//     br-ux9ty.env
-//
+//	br-ux9ty.env
 func clusterIDFromPath(path string) (string, error) {
 	r := regexp.MustCompile(`([a-z0-9]+).env$`)
 	l := r.FindStringSubmatch(path)

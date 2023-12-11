@@ -156,8 +156,7 @@ func (c *Bridge) Describe(ch chan<- *prometheus.Desc) error {
 // net.Interfaces. The name variable is intended to be the interface name of the
 // KVM node's network bridge.
 //
-//     br-6m5o8
-//
+//	br-6m5o8
 func clusterIDFromName(name string) (string, error) {
 	r := regexp.MustCompile(`br-([a-z0-9]+)$`)
 	l := r.FindStringSubmatch(name)
